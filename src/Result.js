@@ -7,13 +7,17 @@ class Result extends React.Component {
     
     render() {
 	return (
-	    <div>
-		<a href={this.props.url}>{this.props.title}</a>
-		{this.props.description}
-	    </div>);
+	    
+	    <a target="_blank" href={this.props.url} className="result">
+		<h1>{this.props.title}</h1>
+		<p>{this.props.description}</p>
+	    </a>
+	);
     }
 }
 
 export default Result;
-	    
+
+
+
 	    

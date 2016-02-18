@@ -7,10 +7,11 @@ class Search extends React.Component {
     
     constructor(props) {
 	super(props);
-	this.state = { value: "Richard",
-		       results: [] };
+	this.state = { value: "",
+		       results: []};
 	this.handleChange = this.handleChange.bind(this);
-	this.search = this.search.bind(this);
+	this.buttonClicked = this.buttonClicked.bind(this);
+	this.clearSearch = this.clearSearch.bind(this);
     }
     
     
@@ -46,30 +47,59 @@ class Search extends React.Component {
 	});
     }
 
+    random() {
+	window.open("//en.wikipedia.org/wiki/Special:Random");
+    }
+    
     handleChange(event) {
 	this.setState({value: event.target.value});
     }
 
-    render() {
-	return (
+    clearSearch(event) {
+	this.setState({value: "", results: []});
+    }
+    
+    buttonClicked(event) {
+	this.state.value.length === 0 ? this.random() : this.search();
+    }
 
-	    <div>
-		<div className="searchOuter">
-		    
-		    <input className="searchBox"
-			   type="text"
-			   value={this.state.value}
-			   onChange={this.handleChange} />
-		    
-		    <div className="searchButtonOuter">
-			<button className="searchButton"
-				onClick={this.search}>
-			    <i className="fa fa-search"></i>
-			</button>
-		    </div>
-		    
+    render() {
+
+	// if the search bar is empty, clicking search button
+	// will open a random page, otherwise it searches
+	const queryLength = this.state.value.length;
+	
+	const searchClassName = queryLength > 0
+			      ? "searchButton"
+			      : "randomButton";
+	const searchIcon = queryLength > 0
+			 ? "fa fa-search"
+			 : "fa fa-rocket";
+	
+	return (<div>
+	    <div className="searchOuter">
+		
+		<input className="searchBox"
+		       type="text"
+		       value={this.state.value}
+		       onChange={this.handleChange} />
+
+		<div className="clearOuter">
+		    <button onClick={this.clearSearch}>
+			<i className="fa fa-times"></i>
+		    </button>
 		</div>
 
+		<div className="searchButtonOuter">
+		    <button className={searchClassName}
+			    onClick={this.buttonClicked}>
+			<i className={searchIcon}></i>
+		    </button>
+		</div>
+		
+	    </div>
+
+	    <div className="resultsCont">
     		{
 		    this.state.results.map((result, index) => {
 			return (
@@ -81,8 +111,9 @@ class Search extends React.Component {
 			);
 		    })
 		}
-
 	    </div>
+
+	</div>
 	);
     }
 }
